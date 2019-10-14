@@ -13,7 +13,11 @@ args = parser.parse_args()
 print("Input executables dir: %s", args.i)
 print("Output dictionary dir: %s", args.o)
 
-execs = subprocess.check_output(["find", args.i, "-executable -type f"])
+str = subprocess.check_output(["find", args.i, "-executable", "-type", "f"])
+
+execs = str.split('\n')
 
 for f in execs:
-    print(f)
+    fptr = open(f+".od", "w")
+    fptr.write(subprocess.check_output(["objdump", "-d", f]))
+    fptr.close()
